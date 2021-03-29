@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>CompleteUI Design Course by Gary Simon - Get Notified!</title>
+  <meta name="keywords" content="ui design, ui design course, gary simon">
+  <meta name="description" content="Subscribe via email now to get notified when I release my comprehensive UI Design Course.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <div class="proto-container">
+    <div class="proto"></div>
+    <div class="proto"></div>
+    <div class="proto"></div>
+    <div class="proto"></div>
+  </div>
+
+  <div class="container">
+    <div class="inner">
+      <div class="left">
+        <i class="fas fa-fire logo"></i>
+        <!-- <img src="https://completeui.design/images/logo.svg" alt="CompleteUI Logo" class="logo"> -->
+
+        <div class="content">
+          <h1>Demo web <span>#tentenCoder</span></h1>
+
+          <p>when you're tired of everything. I will send you stories about myself. it will probably give you empathy. </p>
+          <p class="light">Source code from https://completeui.design/. Thanks for your watching!</p>
+        </div>
+      </div>
+      <div class="right">
+        <div id="signup" class="inner-form">
+          <p class="notify">Get notified when I have news!</p>
+
+          <form action="/subscribe" method="POST">
+            <input type="text" name="fName" id="fName" placeholder="First Name" equired>
+            <input type="text" name="lName" id="lName" placeholder="Last Name" required>
+            <input type="email" name="email" id="email" placeholder="Your Email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+            <p id="error" class="error">Please enter an email</p>
+            <input type="submit" value="Notify Me" class="button" id="cta">
+          </form>
+
+        </div>
+        <div id="success" class="inner-form">
+          <h2>Confirm your email!</h2>
+          <p>The last step is to confirm your email. Give it a couple minutes!</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let cta = document.getElementById('cta');
+    let email = document.getElementById('email').value;
+    let fName = document.getElementById('fName').value;
+    let lName = document.getElementById('lName').value;
+    let error = document.getElementById('error');
+    let success = document.getElementById('success');
+    let signup = document.getElementById('signup');
+
+    cta.addEventListener('click', (event) => {
+      event.preventDefault();
+
+      if (this.email.value == null || this.email.value == "") {
+        error.classList.add('errorAnim');
+      } else {
+        console.log('activated');
+        let fetchData = {
+          method: 'POST',
+          // stringify converts an object to a JSON value
+          body: JSON.stringify({
+            email: this.email.value,
+            fName: this.fName.value;
+            lName: this.lName.value;
+            js: true
+          }),
+          // because we're sending JSON data now, we include the following headers as application/json
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+
+        fetch('/subscribe', fetchData)
+          .then(res => {
+            if (res.ok) {
+              signup.classList.add('fadeout');
+              setTimeout(() => {
+                success.classList.add('fadein');
+                signup.style.display = 'none';
+              }, 1000)
+            } else {
+              console.log('not ok')
+              error.style.display = 'block';
+            }
+          })
+          .catch(console.error)
+
+
+      }
+
+    })
+
+
+    let left = document.querySelector('.left');
+    let content = document.querySelector('.content');
+    let protos = document.querySelectorAll('.proto');
+
+    left.addEventListener('mousemove', (event) => {
+      let move = (event.clientX * 0.05) + 4;
+      let move2 = (event.clientX * 0.003);
+      content.style.transform = `translateX(-${move2}%)`;
+
+      protos.forEach((proto) => {
+        proto.style.transform = `translateX(${move}%)`;
+      })
+    })
+  </script>
+</body>
+
+</html>
